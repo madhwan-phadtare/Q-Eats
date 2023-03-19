@@ -1,7 +1,7 @@
 
 /*
  *
- *  * Copyright (c) Crio.Do 2019. All rights reserved
+ * * Copyright (c) Crio.Do 2019. All rights reserved
  *
  */
 
@@ -31,9 +31,18 @@ public class RestaurantServiceImpl implements RestaurantService {
 
   private final Double peakHoursServingRadiusInKms = 3.0;
   private final Double normalHoursServingRadiusInKms = 5.0;
-
   @Autowired
   private RestaurantRepositoryService restaurantRepositoryService;
+
+  private boolean isTimeWithInRange(LocalTime timeNow, LocalTime startTime, LocalTime endTime) {
+    return timeNow.isAfter(startTime) && timeNow.isBefore(endTime);
+  }
+
+  public boolean isPeakHour(LocalTime timeNow) {
+    return isTimeWithInRange(timeNow, LocalTime.of(7, 59, 59), LocalTime.of(10, 00, 01))
+        || isTimeWithInRange(timeNow, LocalTime.of(12, 59, 59), LocalTime.of(14, 00, 01))
+        || isTimeWithInRange(timeNow, LocalTime.of(18, 59, 59), LocalTime.of(21, 00, 01));
+  }
 
 
   // TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement findAllRestaurantsCloseby.
@@ -42,27 +51,15 @@ public class RestaurantServiceImpl implements RestaurantService {
   public GetRestaurantsResponse findAllRestaurantsCloseBy(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
 
-        Double latitude = getRestaurantsRequest.getLatitude();
-        Double longitude = getRestaurantsRequest.getLongitude();
-        Double servingRadiusInKms;
-        // 8AM - 10AM, 1PM-2PM, 7PM-9PM
+    Double servingRadiusInKms =
+        isPeakHour(currentTime) ? peakHoursServingRadiusInKms : normalHoursServingRadiusInKms;
 
-    int h = currentTime.getHour();
-    int m = currentTime.getMinute();
+    List<Restaurant> restaurantsCloseBy =
+        restaurantRepositoryService.findAllRestaurantsCloseBy(getRestaurantsRequest.getLatitude(),
+            getRestaurantsRequest.getLongitude(), currentTime, servingRadiusInKms);
 
-    if ((h >= 8 && h <= 9) || (h == 10 && m == 0) || (h == 13) || (h == 14 && m == 0)
-        || (h >= 19 && h <= 20) || (h == 21 && m == 0)) {
-      servingRadiusInKms = peakHoursServingRadiusInKms;
-    } else {
-      servingRadiusInKms = normalHoursServingRadiusInKms;
-    }
+    return new GetRestaurantsResponse(restaurantsCloseBy);
 
-        // RestaurantRepositoryServiceDummyImpl restaurantRepositoryServiceDummyImpl = new RestaurantRepositoryServiceDummyImpl();
-        List<Restaurant> restaurants = restaurantRepositoryService.findAllRestaurantsCloseBy(latitude, longitude, currentTime, servingRadiusInKms);
-
-        GetRestaurantsResponse response = new GetRestaurantsResponse(restaurants);
-
-     return response;
   }
 
 

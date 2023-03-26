@@ -35,6 +35,8 @@ import lombok.NoArgsConstructor;
 // }
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Restaurant {
     @JsonIgnore
     private String id;
@@ -46,7 +48,7 @@ public class Restaurant {
     private Double longitude;
     private String opensAt;
     private String closesAt;
-    private ArrayList<String> attributes;
+    private List<String> attributes = new ArrayList<>();
 
 }
 

@@ -61,7 +61,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     return time.isAfter(openingTime) && time.isBefore(closingTime);
   }
 
-  // TODO: CRIO_TASK_MODULE_NOSQL
+  // DONE: CRIO_TASK_MODULE_NOSQL
   // Objectives:
   // 1. Implement findAllRestaurantsCloseby.
   // 2. Remember to keep the precision of GeoHash in mind while using it as a key.
@@ -81,19 +81,24 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
 
     List<Restaurant> restaurants = new ArrayList<>();
 
-
-
+ 
+ 
     for (RestaurantEntity entity : restaurantEntities) {
-
 
       // servingRadiusInKms =
       //     isPeakHour(currentTime) ? peakHoursServingRadiusInKms : normalHoursServingRadiusInKms;
 
       if (isRestaurantCloseByAndOpen(entity , currentTime , latitude , longitude , servingRadiusInKms)) {
+
+
+
         restaurants.add(new Restaurant(entity.getId(), entity.getRestaurantId(), entity.getName(),
             entity.getCity(), entity.getImageUrl(), entity.getLatitude(), entity.getLongitude(),
             entity.getOpensAt(), entity.getClosesAt(), entity.getAttributes()));
+  
       }
+
+      //if(count == 6) break;
 
     }
 
@@ -116,7 +121,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
 
 
 
-  // TODO: CRIO_TASK_MODULE_NOSQL
+  // DONE: CRIO_TASK_MODULE_NOSQL
   // Objective:
   // 1. Check if a restaurant is nearby and open. If so, it is a candidate to be returned.
   // NOTE: How far exactly is "nearby"?

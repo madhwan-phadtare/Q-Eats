@@ -16,6 +16,7 @@ import static com.crio.qeats.controller.RestaurantController.POST_ORDER_API;
 import static com.crio.qeats.controller.RestaurantController.RESTAURANTS_API;
 import static com.crio.qeats.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -108,11 +109,11 @@ public class RestaurantControllerTest {
         .queryParam("latitude", "91")
         .queryParam("longitude", "20")
         .build().toUri();
-    
+
     assertEquals(RESTAURANT_API_URI + "?latitude=91&longitude=20", uri.toString());
 
     MockHttpServletResponse response = mvc.perform(
-      get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
     ).andReturn().getResponse();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());

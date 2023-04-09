@@ -8,10 +8,12 @@ package com.crio.qeats.exchanges;
 
 import com.crio.qeats.dto.Restaurant;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-// TODO: CRIO_TASK_MODULE_RESTAURANTSAPI
+// DONE: CRIO_TASK_MODULE_RESTAURANTSAPI
 //  Implement GetRestaurantsResponse.
 // Complete the class such that it produces the following JSON during serialization.
 // {
@@ -46,9 +48,13 @@ import lombok.Data;
 //    }
 //  ]
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class GetRestaurantsResponse {
-    private List<Restaurant> restaurants; 
+
+    @NotNull
+    private List<Restaurant> restaurants;
+
 }
 
 // }

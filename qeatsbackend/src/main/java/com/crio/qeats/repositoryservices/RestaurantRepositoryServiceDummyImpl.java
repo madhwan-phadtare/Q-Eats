@@ -14,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+// @Service
 public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositoryService {
   private static final String FIXTURES = "fixtures/exchanges";
   private ObjectMapper objectMapper = new ObjectMapper();
@@ -26,8 +27,7 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
     });
   }
 
-  
-  // TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Use this dummy implementation.
+  // DONE: CRIO_TASK_MODULE_RESTAURANTSAPI - Use this dummy implementation.
   // This function returns a list of restaurants in any lat/long of your choice randomly.
   // It will load some dummy restaurants and change their latitude/longitude near
   // the lat/long you pass. In the next module, once you start using mongodb, you will not use
@@ -37,7 +37,6 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
       LocalTime currentTime, Double servingRadiusInKms) {
     List<Restaurant> restaurantList = new ArrayList<>();
     try {
-      
       restaurantList = loadRestaurantsDuringNormalHours();
     } catch (IOException e) {
       e.printStackTrace();

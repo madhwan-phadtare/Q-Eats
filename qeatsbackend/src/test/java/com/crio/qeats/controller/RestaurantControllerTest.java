@@ -60,10 +60,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.UriComponentsBuilder;
 
-// TODO: CRIO_TASK_MODULE_RESTAURANTSAPI
-//  Pass all the RestaurantController test cases.
-//  Make modifications to the tests if necessary.
-//  Test RestaurantController by mocking RestaurantService.
 @SpringBootTest(classes = {QEatsApplication.class})
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 @AutoConfigureMockMvc
@@ -71,7 +67,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @ActiveProfiles("test")
 public class RestaurantControllerTest {
 
-  //FIXME: REVIEW the api names
   private static final String RESTAURANT_API_URI = RESTAURANT_API_ENDPOINT + RESTAURANTS_API;
   private static final String MENU_API_URI = RESTAURANT_API_ENDPOINT + MENU_API;
   private static final String CART_API_URI = RESTAURANT_API_ENDPOINT + CART_API;
@@ -238,19 +233,23 @@ public class RestaurantControllerTest {
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
   }
 
-//   @Test
-//   public void incorrectlySpelledLongitudeParamResultsInBadHttpRequest() throws Exception {
-//         .build().toUri();
+  @Test
+  public void incorrectlySpelledLongitudeParamResultsInBadHttpRequest() throws Exception {
+    URI uri = UriComponentsBuilder
+        .fromPath(RESTAURANT_API_URI)
+        .queryParam("latitude", "10")
+        .queryParam("longitue", "20")
+        .build().toUri();
 
-//     assertEquals(RESTAURANT_API_URI + "?latitude=10&longitue=20", uri.toString());
+    assertEquals(RESTAURANT_API_URI + "?latitude=10&longitue=20", uri.toString());
 
 
-//     MockHttpServletResponse response = mvc.perform(
-//         get(uri.toString()).accept(APPLICATION_JSON_UTF8)
-//     ).andReturn().getResponse();
+    MockHttpServletResponse response = mvc.perform(
+        get(uri.toString()).accept(APPLICATION_JSON_UTF8)
+    ).andReturn().getResponse();
 
-//     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
-//   }
+    assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+  }
 
   @Test
   public void incorrectlySpelledLatitudeParamResultsInBadHttpRequest() throws Exception {

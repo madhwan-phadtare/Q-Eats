@@ -6,8 +6,6 @@
  */
 
 package com.crio.qeats;
- 
-
 
 import com.crio.qeats.globals.GlobalConstants;
 import lombok.extern.log4j.Log4j2;

@@ -17,5 +17,10 @@ public interface RestaurantRepository extends MongoRepository<RestaurantEntity, 
 
     List<RestaurantEntity> findAll();
 
+    @Query("{'name':{$regex: '^?0$', $options: 'i'}}")
+    Optional<List<RestaurantEntity>> findRestaurantsByNameExact(String name);
+    // Optional<List<Restaurant>> findRestaurantsByNameExact(String name);
+
+
 }
 

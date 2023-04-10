@@ -29,6 +29,13 @@ public class GetRestaurantsRequest {
     private Double latitude;
     @NotNull
     private Double longitude;
+    
+    public GetRestaurantsRequest(@NotNull Double latitude, @NotNull Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    private String searchFor;
  
 
 

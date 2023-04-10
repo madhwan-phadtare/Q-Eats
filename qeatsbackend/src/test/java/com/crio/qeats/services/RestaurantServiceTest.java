@@ -65,7 +65,6 @@ class RestaurantServiceTest {
   }
 
   private String getServingRadius(List<Restaurant> restaurants, LocalTime timeOfService) {
- 
     when(restaurantRepositoryServiceMock
         .findAllRestaurantsCloseBy(any(Double.class), any(Double.class), any(LocalTime.class),
             any(Double.class)))

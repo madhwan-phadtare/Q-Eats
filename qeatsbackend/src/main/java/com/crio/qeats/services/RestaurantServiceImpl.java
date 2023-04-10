@@ -1,7 +1,7 @@
 
 /*
  *
- * * Copyright (c) Crio.Do 2019. All rights reserved
+ *  * Copyright (c) Crio.Do 2019. All rights reserved
  *
  */
 
@@ -65,6 +65,67 @@ return isTimeWithInRange(timeNow, LocalTime.of(7, 59, 59), LocalTime.of(10, 00, 
     return new GetRestaurantsResponse(restaurantsCloseBy);
 
   }
+
+  @Override
+  public GetRestaurantsResponse findRestaurantsBySearchQuery(
+          GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
+
+    // lattitude: 20.0 , Longitude: 30.0 , SearchFor: Test , currentTime: 22.00.00 (10 PM)
+    List<List<Restaurant>> restaurantAnsList=new ArrayList<>();
+
+    Double servingRadiusInKms = isPeakHour(currentTime) ? peakHoursServingRadiusInKms : normalHoursServingRadiusInKms;
+    //ServingRadiusInKMs= 3.0 km
+
+    String searchFor = getRestaurantsRequest.getSearchFor();
+
+    Set<String> restaurantSet = new HashSet<>();
+
+    List<Restaurant> restaurantList = new ArrayList<>();
+
+    if(!searchFor.isEmpty()){
+
+      //By Name
+      restaurantAnsList.add(restaurantRepositoryService.findRestaurantsByName(getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms));
+
+      //By Attributes
+      restaurantAnsList.add(restaurantRepositoryService.findRestaurantsByAttributes(getRestaurantsRequest.getLatitude(),
+              getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms));
+
+      //By ItemName
+      restaurantAnsList.add(restaurantRepositoryService.findRestaurantsByItemName(getRestaurantsRequest.getLatitude(),
+              getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms));
+
+      //By ItemAttributes
+      restaurantAnsList.add(restaurantRepositoryService.findRestaurantsByItemAttributes(getRestaurantsRequest.getLatitude(),
+              getRestaurantsRequest.getLongitude(), searchFor, currentTime, servingRadiusInKms));
+
+
+      // restaurantList = restaurantAnsList.stream().distinct().collect(Collectors.toList());
+
+
+      for(List<Restaurant> ListRestIter:restaurantAnsList){
+
+        for(Restaurant restListRestIterIter: ListRestIter){
+
+          if(!restaurantSet.contains(restListRestIterIter.getRestaurantId())){
+            restaurantSet.add(restListRestIterIter.getName());
+            restaurantList.add(restListRestIterIter);
+          }
+        }
+      }
+
+      return new GetRestaurantsResponse(restaurantList);
+
+    }else{
+
+      return new GetRestaurantsResponse(new ArrayList<>());
+
+    }
+
+  }
+
+
+
 
 
 }

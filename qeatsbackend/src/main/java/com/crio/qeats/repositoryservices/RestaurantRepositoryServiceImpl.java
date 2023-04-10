@@ -10,7 +10,11 @@ import ch.hsr.geohash.GeoHash;
 import com.crio.qeats.configs.RedisConfiguration;
 import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.globals.GlobalConstants;
+import com.crio.qeats.models.ItemEntity;
+import com.crio.qeats.models.MenuEntity;
 import com.crio.qeats.models.RestaurantEntity;
+import com.crio.qeats.repositories.ItemRepository;
+import com.crio.qeats.repositories.MenuRepository;
 import com.crio.qeats.repositories.RestaurantRepository;
 import com.crio.qeats.utils.GeoLocation;
 import com.crio.qeats.utils.GeoUtils;
@@ -201,6 +205,62 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   /**
    * Utility method to check if a restaurant is within the serving radius at a given time.
    * 
+   * public List<Restaurant> findAllRestaurantsCloseBy(Double latitude, Double longitude, LocalTime
+   * currentTime, Double servingRadiusInKms) {
+   * 
+   * List<Restaurant> restaurants = null;
+   * 
+   * 
+   * 
+   * 
+   * return restaurants; }
+   * 
+   * // Done: CRIO_TASK_MODULE_RESTAURANTSEARCH // Objective: // Find restaurants whose names have
+   * an exact or partial match with the search query.
+   * 
+   * @Override public List<Restaurant> findRestaurantsByName(Double latitude, Double longitude,
+   *           String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+   * 
+   * 
+   *           return null; }
+    
+    
+              // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH // Objective: // Find restaurants whose
+              attributes (cuisines) intersect with the search query.
+    @Override public List<Restaurant> findRestaurantsByAttributes( Double latitude, Double
+   *           longitude, String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+   * 
+   * 
+   *           return null; }
+   * 
+   * 
+   * 
+   *           // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH // Objective: // Find restaurants which
+   *           serve food items whose names form a complete or partial match // with the search
+   *           query.
+   * 
+   * @Override public List<Restaurant> findRestaurantsByItemName( Double latitude, Double longitude,
+   *           String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+   * 
+   * 
+   *           return null; }
+   * 
+   *           // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH // Objective: // Find restaurants which
+   *           serve food items whose attributes intersect with the search query.
+   * @Override public List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double
+   *           longitude, String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+   * 
+   *           return null; }
+   * 
+   * 
+   * 
+   * 
+   * 
+   * 
+   * 
+   * 
+   *           /** Utility method to check if a restaurant is within the serving radius at a given
+   *           time.
    * @return boolean True if restaurant falls within serving radius and is open, false otherwise
    */
   private boolean isRestaurantCloseByAndOpen(RestaurantEntity restaurantEntity,
@@ -215,7 +275,62 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     return false;
   }
 
+  @Override
+  public List<Restaurant> findRestaurantsByName(Double latitude, Double longitude,
+      String searchString, LocalTime currentTime, Double servingRadiusInKms) {
 
+    List<Restaurant> restaurants =
+        findAllRestaurantsCloseBy(latitude, longitude, currentTime, servingRadiusInKms);
+    List<Restaurant> res = new ArrayList<>();
+    for (Restaurant r : restaurants) {
+      if (r.getName().toLowerCase().contains(searchString.toLowerCase())) {
+        res.add(r);
+      }
+    }
+    return res;
+
+  }
+
+  @Override
+  public List<Restaurant> findRestaurantsByAttributes(Double latitude, Double longitude,
+      String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+    List<Restaurant> restaurants =
+        findAllRestaurantsCloseBy(latitude, longitude, currentTime, servingRadiusInKms);
+
+        List<Restaurant> res = new ArrayList<>();
+        for (Restaurant r : restaurants) {
+          if (r.getAttributes().contains(searchString)) {
+            res.add(r);
+          }
+        }
+        return res;
+  }
+
+
+  @Override
+  public List<Restaurant> findRestaurantsByItemName(Double latitude, Double longitude,
+      String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+    // List<Restaurant> restaurants =
+    //     findAllRestaurantsCloseBy(latitude, longitude, currentTime, servingRadiusInKms);
+    //     List<Restaurant> res = new ArrayList<>();
+    //     for (Restaurant r : restaurants) {
+    //       if (r.getAttributes().contains(searchString)) {
+    //         res.add(r);
+    //       }
+    //     }
+    //     return res;
+    return new ArrayList<Restaurant>();
+  }
+
+  @Override
+  public List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double longitude,
+      String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+    // List<Restaurant> restaurants =
+        // findAllRestaurantsCloseBy(latitude, longitude, currentTime, servingRadiusInKms);
+
+
+        return new ArrayList<Restaurant>();
+  }
 
 }
 
